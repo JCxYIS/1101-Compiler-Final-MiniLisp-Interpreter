@@ -70,8 +70,8 @@ namespace _1101_Compiler_Final___MiniLisp_Interpreter
         /// <returns></returns>
         private static string Evaluate(string lispCode)
         {
-            // TODO evaluation
-            return "TODO";
+            Interpreter interpreter = new Interpreter(lispCode);
+            return interpreter.Evaluate();
         }
     }
 }
