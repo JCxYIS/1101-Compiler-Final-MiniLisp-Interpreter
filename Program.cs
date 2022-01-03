@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace _1101_Compiler_Final___MiniLisp_Interpreter
+namespace JC.MiniLisp_Interpreter
 {
     class Program
     {
