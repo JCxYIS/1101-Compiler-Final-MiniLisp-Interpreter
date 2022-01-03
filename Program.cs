@@ -17,7 +17,7 @@ namespace JC.MiniLisp_Interpreter
                 string input = useFileInput ? ReadFileInput(args[0]) : ReadInput();
                 Console.WriteLine("--------------------------------------------------------------------------");
                 Console.WriteLine("Here is the output:");
-                Console.WriteLine(Evaluate(input));
+                Evaluate(input);
                 Console.WriteLine("--------------------------------------------------------------------------");
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
