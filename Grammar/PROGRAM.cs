@@ -36,12 +36,14 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
         public object Evaluate()
         {
+            string output = "";
             foreach(var stmt in stmts)
             {
-                Debug.Log("[PROGRAM] Evaluate "+stmt);
-                stmt.Evaluate();   
+                string out1 = stmt.Evaluate().ToString();
+                Debug.Log("[PROGRAM] Evaluate "+stmt + "Get " + out1);
+                output += out1;   
             }
-            return null;
+            return output;
         }
     }
 }

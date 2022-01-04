@@ -4,7 +4,7 @@ namespace JC.MiniLisp_Interpreter
 {
     public class Debug
     {
-        const bool UseDebug = false;
+        const bool UseDebug = true;
 
         /// <summary>
         /// Debug Log
@@ -14,7 +14,7 @@ namespace JC.MiniLisp_Interpreter
         {
             if(UseDebug)
             {
-                Print(log, ConsoleColor.Gray);
+                Print(log, ConsoleColor.DarkGray);
             }
         }
 

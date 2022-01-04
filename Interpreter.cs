@@ -33,14 +33,14 @@ namespace JC.MiniLisp_Interpreter
         /// Evaluate the code, output result
         /// </summary>
         /// <returns></returns>
-        public void Evaluate()
+        public string Evaluate()
         {
             // token is either IGrammar or string
             List<object> tokens = Scanner(code);            
 
             PROGRAM program = Parser(tokens);
 
-            program.Evaluate();
+            return program.Evaluate().ToString();
         }
 
         /// <summary>

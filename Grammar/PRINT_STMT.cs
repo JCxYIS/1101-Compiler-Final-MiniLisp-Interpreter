@@ -35,18 +35,19 @@ namespace JC.MiniLisp_Interpreter.Grammar
         public object Evaluate()
         {
             object result = r.Evaluate();
+            string output = "";
 
             if(cmd == "print-num")
             {
-                Console.WriteLine(result);
+                output = result.ToString();
             }
             else
             {
-                Console.WriteLine((bool)result ? "#t" : "#f");
+                output = (bool)result ? "#t" : "#f";
             }
-
-            // no return value
-            return null;
+            
+            Debug.Print(output);
+            return output + "\r\n";
         }
     }
 }

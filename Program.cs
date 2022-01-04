@@ -11,16 +11,26 @@ namespace JC.MiniLisp_Interpreter
             bool useFileInput = args.Length != 0;
             while(true)
             {
-                Console.WriteLine("-+-+- 1101 Compiler Final - MiniLisp Interpreter +-+-+");
-                Console.WriteLine("--------------------------------------------------------------------------");
-                Console.WriteLine("Please input your MiniLisp code:");
+                Debug.Print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+", ConsoleColor.Red);
+                Debug.Print("-+-+- 1101 Compiler Final - MiniLisp Interpreter +-+-+", ConsoleColor.Yellow);
+                Debug.Print("-+-+-             Crafted by JCxYIS              +-+-+", ConsoleColor.Green);
+                Debug.Print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+", ConsoleColor.Cyan);
+
+                Debug.Print("Please input your MiniLisp code:", ConsoleColor.Magenta);
                 string input = useFileInput ? ReadFileInput(args[0]) : ReadInput();
-                Console.WriteLine("--------------------------------------------------------------------------");
-                Console.WriteLine("Here is the output:");
+
+                Debug.Print("------------------------------------------------------", ConsoleColor.Blue);
+                Debug.Print("OK, Here is your output:", ConsoleColor.Magenta);
+
                 Evaluate(input);
-                Console.WriteLine("--------------------------------------------------------------------------");
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+
+                Debug.Print("------------------------------------------------------", ConsoleColor.Blue);
+                Debug.Print("Press any key to continue...", ConsoleColor.Magenta);
+                Debug.Print("or press Esc to quit :)", ConsoleColor.Magenta);
+
+                if(Console.ReadKey().Key == ConsoleKey.Escape)
+                    return;
+
                 Console.Clear();
                 useFileInput = false;
             }
@@ -70,8 +80,16 @@ namespace JC.MiniLisp_Interpreter
         /// <returns></returns>
         private static void Evaluate(string lispCode)
         {
-            Interpreter interpreter = new Interpreter(lispCode);        
-            interpreter.Evaluate();
+            try
+            {
+                Interpreter interpreter = new Interpreter(lispCode);        
+                string output = interpreter.Evaluate();
+                // Console.Write(output); // "This is virtual IO"
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Error! " + e, ConsoleColor.Red);
+            }
         }
     }
 }
