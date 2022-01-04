@@ -33,15 +33,14 @@ namespace JC.MiniLisp_Interpreter
         /// Evaluate the code, output result
         /// </summary>
         /// <returns></returns>
-        public string Evaluate()
+        public void Evaluate()
         {
-            // TODO evaluation
-            // token is either IGrammar or char
+            // token is either IGrammar or string
             List<object> tokens = Scanner(code);            
 
-            Parser(tokens);
+            PROGRAM program = Parser(tokens);
 
-            return "";
+            program.Evaluate();
         }
 
         /// <summary>
@@ -62,8 +61,6 @@ namespace JC.MiniLisp_Interpreter
             // scan each string s into token (IGrammar form)
             foreach(string s in splitedCode)
             {
-                // Console.WriteLine($"[SPLITED CODE]\"{s}\"");
-
                 if(double.TryParse(s, out double value))
                 {
                     // token is number
@@ -88,7 +85,7 @@ namespace JC.MiniLisp_Interpreter
         /// Top-down parser
         /// </summary>
         /// <param name="tokens"></param>
-        public void Parser(List<object> tokens)
+        public PROGRAM Parser(List<object> tokens)
         {
             // stack
             Stack<object> stack = new Stack<object>();
@@ -98,17 +95,35 @@ namespace JC.MiniLisp_Interpreter
             {
                 // Shift one token to stack
                 stack.Push(token);    
-                Console.WriteLine("[TOKEN]"+token);
+                // Console.WriteLine("[TOKEN]"+token);
                 Stack<object> cachedStack = new Stack<object>();
 
                 // Check if the stack is altered, 
                 // if it IS altered, keep running.
                 while(
-                    PROGRAM.TryParse(stack) 
+                    NUM_OP.TryParse(stack)
+                    || EXP.TryParse(stack)
+                    || PRINT_STMT.TryParse(stack) 
                 ) 
                 {                    
+                    if(stack.Count == 0)
+                    {
+                        break;
+                    }
                 }
+
+                // Debug print Stack
+                string log = $"[PARSER] Stack (LEN={stack.Count}) is ";
+                foreach(var ele in stack)
+                {
+                    log += "\n........"+ele;
+                }
+                Debug.Log(log);
             }
+
+            // finish parse, now try sum up to PROGRAM
+            STMT.ParseAll(stack);
+            return PROGRAM.ParseAll(stack);
         }
     }
 }

@@ -8,32 +8,40 @@ namespace JC.MiniLisp_Interpreter.Grammar
     /// </summary>
     public class PROGRAM : IGrammar
     {
-        private STMT stmt;
+        private List<STMT> stmts;
 
-        public PROGRAM(STMT stmt)
+        public PROGRAM(List<STMT> stmts)
         {
-            this.stmt = stmt;
+            this.stmts = stmts;
         }
 
-        /// <summary>
-        /// Try parse the parser stack
-        /// </summary>
-        /// <param name="stack"></param>
-        /// <returns>The stack is substitued</returns>
-        public static bool TryParse(Stack<object> stack)
+        
+        public static PROGRAM ParseAll(Stack<object> stack)
         {
-            if(stack.Peek() is STMT)
+            List<STMT> stmts = new List<STMT>();
+            while(stack.Count > 0)
             {
-                // TODO pop the stack and transform to PROGRAM
-                return true;
+                var o = stack.Pop();
+                if(o is not STMT)
+                {
+                    throw new System.Exception("Found non-STMTS");
+                }
+                stmts.Add((STMT)o);
             }
 
-            return false;
+            PROGRAM program = new PROGRAM(stmts);
+            stack.Push(program);
+            return program;
         }
 
         public object Evaluate()
         {
-            return stmt.Evaluate();
+            foreach(var stmt in stmts)
+            {
+                Debug.Log("[PROGRAM] Evaluate "+stmt);
+                stmt.Evaluate();   
+            }
+            return null;
         }
     }
 }

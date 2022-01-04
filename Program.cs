@@ -68,10 +68,10 @@ namespace JC.MiniLisp_Interpreter
         /// Evaluate the miniLisp code
         /// </summary>
         /// <returns></returns>
-        private static string Evaluate(string lispCode)
+        private static void Evaluate(string lispCode)
         {
-            Interpreter interpreter = new Interpreter(lispCode);
-            return interpreter.Evaluate();
+            Interpreter interpreter = new Interpreter(lispCode);        
+            interpreter.Evaluate();
         }
     }
 }

@@ -30,16 +30,34 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 return ((IGrammar)value).Evaluate();
         }
 
-        public static Stack<object> TryParse(Stack<object> stack)
+        /// <summary>
+        /// Try parse the parser stack
+        /// </summary>
+        /// <param name="stack"></param>
+        /// <returns>The stack is substitued</returns>
+        public static bool TryParse(Stack<object> stack)
         {
-            throw new NotImplementedException();
+            object top = stack.Peek();
+            // for number and bool, scanner has already done the job.
+            if(/* top is VARIABLE ||*/ top is NUM_OP /* || top is LOGICAL-OP || FUN-OP || FUN-CALL || IF-EXP*/)
+            {
+                top = stack.Pop();
+                stack.Push(new EXP(top.GetType(), top));
+                return true;
+            }
+            return false;
         }
 
         public T Evaluate<T>()
         {
-            return (T)Evaluate();
+            T t = (T)Evaluate();
+            Debug.Log($"[EXP] Evaluate {type}, expect {typeof(T)}, and get value {t}");
+            return t;
         }        
 
-        
+        public override string ToString()
+        {
+            return $"EXP with type {type}, value {value}";
+        }   
     }
 }

@@ -15,24 +15,33 @@ namespace JC.MiniLisp_Interpreter.Grammar
             value = exp;
         }
 
-        /// <summary>
-        /// Try parse the parser stack
-        /// </summary>
-        /// <param name="stack"></param>
-        /// <returns>The stack is substitued</returns>
-        public static bool TryParse(Stack<object> stack)
+        public static void ParseAll(Stack<object> stack)
         {
-            if(stack.Peek() is EXP || stack.Peek() is PRINT_STMT) // TODO DEF-STMT
+            List<STMT> stmts = new List<STMT>();
+
+            while(stack.Count > 0) 
             {
-                // TODO pop the stack and substitue
-                return true;
+                object o = stack.Peek();
+                if(o is EXP || o is PRINT_STMT) // TODO DEF-STMT
+                {
+                    IGrammar newGrammar = (IGrammar)stack.Pop();
+                    stmts.Add( new STMT(newGrammar) );
+                }
             }
 
-            return false;
+            // stmts.Reverse();
+
+            foreach(STMT stmt in stmts)
+            {
+                stack.Push(stmt); 
+            }
+
+            // return false;
         }
 
         public object Evaluate()
         {
+            Debug.Log("[STMT] Evaluate "+value);
             return value.Evaluate();
         }
     }
