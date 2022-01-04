@@ -25,7 +25,15 @@ namespace JC.MiniLisp_Interpreter.Grammar
             this.op = op;
             this.elements = elements.ToList();
 
-            // TODO length check: only + * = support multi
+            //  + * = support more than 2 elements
+            int len = elements.Length;
+            if(op == "+" || op == "*" || op == "=")
+                if(len < 2)
+                    throw new System.Exception($"Need 2 or more arguments, but got {len}.");
+            else
+                if(len != 2)
+                    throw new System.ArgumentOutOfRangeException($"Need 2 arguments, but got {len}.");
+
         }
 
 
@@ -47,6 +55,8 @@ namespace JC.MiniLisp_Interpreter.Grammar
             List<EXP> exp = new List<EXP>();
             for(int i = 1; i < match.Count; i++)
             {
+                if( !(match[i] is EXP) )
+                    throw new System.Exception($"Syntax error, expect EXP but get \"{match[i]}\"({match[i].GetType()}).");
                 EXP e = (EXP)match[i];
                 exp.Add(e);
             }

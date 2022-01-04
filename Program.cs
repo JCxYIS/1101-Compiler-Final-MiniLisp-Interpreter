@@ -13,7 +13,7 @@ namespace JC.MiniLisp_Interpreter
             {
                 Debug.Print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+", ConsoleColor.Red);
                 Debug.Print("-+-+- 1101 Compiler Final - MiniLisp Interpreter +-+-+", ConsoleColor.Yellow);
-                Debug.Print("-+-+-             Crafted by JCxYIS              +-+-+", ConsoleColor.Green);
+                Debug.Print("-+-+-           Handcrafted by JCxYIS            +-+-+", ConsoleColor.Green);
                 Debug.Print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+", ConsoleColor.Cyan);
 
                 Debug.Print("Please input your MiniLisp code:", ConsoleColor.Magenta);
@@ -88,7 +88,7 @@ namespace JC.MiniLisp_Interpreter
             }
             catch (Exception e)
             {
-                Debug.Print("Error! " + e, ConsoleColor.Red);
+                Debug.Print($"[Error] {e.Message}\n=== STACK TRACE ===\n{e}", ConsoleColor.Red);
             }
         }
     }
