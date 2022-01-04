@@ -5,7 +5,7 @@ A hand-craft Mini-Lisp (subset of LISP) interpreter written in C#
 
 ## Usage
 Directly open the program in terminal, paste your lisp code,
-or you can pass the path to the lisp code file inro the program (e.g. `"./output.exe testcase/test_data/03_1.lsp"`)
+or you can pass in the path to the lisp code file inro the program (e.g. `"./output.exe testcase/test_data/03_1.lsp"`)
 
 ## Types
-Number -> double
+Currently all number is treated as double

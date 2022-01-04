@@ -40,7 +40,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
             foreach(var stmt in stmts)
             {
                 string out1 = stmt.Evaluate().ToString();
-                Debug.Log("[PROGRAM] Evaluate "+stmt + "Get " + out1);
+                Debug.Log("[PROGRAM] Evaluate " + stmt + " Get " + out1);
                 output += out1;   
             }
             return output;
