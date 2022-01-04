@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 
 namespace JC.MiniLisp_Interpreter.Grammar
 {
@@ -10,6 +11,11 @@ namespace JC.MiniLisp_Interpreter.Grammar
         public PRINT_STMT(EXP exp)
         {
             r = exp;
+        }
+
+        public Stack<object> TryParse(Stack<object> stack)
+        {
+            throw new System.NotImplementedException();
         }
 
         public object Evaluate()

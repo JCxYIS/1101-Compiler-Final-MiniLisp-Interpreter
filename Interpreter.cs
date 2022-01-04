@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JC.MiniLisp_Interpreter.Grammar;
 
 namespace JC.MiniLisp_Interpreter
 {
@@ -34,19 +36,21 @@ namespace JC.MiniLisp_Interpreter
         public string Evaluate()
         {
             // TODO evaluation
-            // AAA
-            List<IGrammar> tokens = Scanner();
+            // token is either IGrammar or char
+            List<object> tokens = Scanner(code);            
 
-            // Scanner
-            
-
+            Parser(tokens);
 
             return "";
         }
 
-        private List<IGrammar> Scanner()
+        /// <summary>
+        /// Scan the incomming code to tokens
+        /// </summary>
+        /// <returns>token is either IGrammar or char</returns>
+        private List<object> Scanner(string code)
         {
-            List<IGrammar> tokens = new List<IGrammar>();
+            List<object> tokens = new List<object>();
 
             List<string> splitedCode = code
                 .Replace("(", " ( ")
@@ -55,12 +59,63 @@ namespace JC.MiniLisp_Interpreter
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .ToList(); 
 
+            // scan each string s into token (IGrammar form)
             foreach(string s in splitedCode)
             {
-                System.Console.WriteLine($"[SPLITED CODE]\"{s}\"");
+                // Console.WriteLine($"[SPLITED CODE]\"{s}\"");
+
+                if(double.TryParse(s, out double value))
+                {
+                    // token is number
+                    tokens.Add( new EXP(typeof(double), value) );
+                }
+                else if(s == "#t" || s == "#f")
+                {
+                    // token is bool
+                    tokens.Add( new EXP(typeof(bool), s == "#t"));
+                }
+                else
+                {
+                    // fallback: add char
+                    foreach(char c in s)
+                    {
+                        tokens.Add(c);
+                    }
+                }
             }
 
             return tokens;
+        }
+
+        /// <summary>
+        /// Top-down parser
+        /// </summary>
+        /// <param name="tokens"></param>
+        public void Parser(List<object> tokens)
+        {
+            // stack
+            Stack<object> stack = new Stack<object>();
+            
+            // one in one push the token into stack
+            foreach(object token in tokens)
+            {
+                // Shift one token to stack
+                stack.Push(token);    
+                Console.WriteLine("[TOKEN]"+token);
+                Stack<object> cachedStack = new Stack<object>();
+
+                // Check if the stack is altered, 
+                // if it IS altered, keep running.
+                while(!cachedStack.SequenceEqual(stack))
+                {
+                    // Console.WriteLine($"[STACK LEN] Stack={stack.Count} Cached={cachedStack.Count}");
+                    // Cache the stack
+                    cachedStack = new Stack<object>(new Stack<object>(stack)); // need to new two time to preserve stack order :(
+
+                    // Follow the Grammar
+                    // 
+                }
+            }
         }
     }
 }

@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 namespace JC.MiniLisp_Interpreter.Grammar
 {
+    /// <summary>
+    /// EXP ::= bool-val | number | VARIABLE | NUM-OP | LOGICAL-OP | FUN-EXP | FUN-CALL | IF-EXP
+    /// </summary>
     public class EXP : IGrammar
     {
         private Type type;
@@ -29,6 +33,12 @@ namespace JC.MiniLisp_Interpreter.Grammar
         public T Evaluate<T>()
         {
             return (T)Evaluate();
+        }
+        
+
+        public Stack<object> TryParse(Stack<object> stack)
+        {
+            throw new NotImplementedException();
         }
     }
 }
