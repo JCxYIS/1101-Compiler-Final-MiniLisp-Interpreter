@@ -47,7 +47,7 @@ namespace JC.MiniLisp_Interpreter
         /// <summary>
         /// Scan the incomming code to tokens
         /// </summary>
-        /// <returns>token is either IGrammar or char</returns>
+        /// <returns>token is either IGrammar or string</returns>
         private List<object> Scanner(string code)
         {
             List<object> tokens = new List<object>();
@@ -76,11 +76,8 @@ namespace JC.MiniLisp_Interpreter
                 }
                 else
                 {
-                    // fallback: add char
-                    foreach(char c in s)
-                    {
-                        tokens.Add(c);
-                    }
+                    // fallback: add str
+                    tokens.Add(s);                
                 }
             }
 
@@ -106,14 +103,10 @@ namespace JC.MiniLisp_Interpreter
 
                 // Check if the stack is altered, 
                 // if it IS altered, keep running.
-                while(!cachedStack.SequenceEqual(stack))
-                {
-                    // Console.WriteLine($"[STACK LEN] Stack={stack.Count} Cached={cachedStack.Count}");
-                    // Cache the stack
-                    cachedStack = new Stack<object>(new Stack<object>(stack)); // need to new two time to preserve stack order :(
-
-                    // Follow the Grammar
-                    // 
+                while(
+                    PROGRAM.TryParse(stack) 
+                ) 
+                {                    
                 }
             }
         }

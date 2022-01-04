@@ -15,9 +15,20 @@ namespace JC.MiniLisp_Interpreter.Grammar
             value = exp;
         }
 
-        public Stack<object> TryParse(Stack<object> stack)
+        /// <summary>
+        /// Try parse the parser stack
+        /// </summary>
+        /// <param name="stack"></param>
+        /// <returns>The stack is substitued</returns>
+        public static bool TryParse(Stack<object> stack)
         {
-            throw new System.NotImplementedException();
+            if(stack.Peek() is EXP || stack.Peek() is PRINT_STMT) // TODO DEF-STMT
+            {
+                // TODO pop the stack and substitue
+                return true;
+            }
+
+            return false;
         }
 
         public object Evaluate()

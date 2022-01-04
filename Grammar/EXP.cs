@@ -30,15 +30,16 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 return ((IGrammar)value).Evaluate();
         }
 
-        public T Evaluate<T>()
-        {
-            return (T)Evaluate();
-        }
-        
-
-        public Stack<object> TryParse(Stack<object> stack)
+        public static Stack<object> TryParse(Stack<object> stack)
         {
             throw new NotImplementedException();
         }
+
+        public T Evaluate<T>()
+        {
+            return (T)Evaluate();
+        }        
+
+        
     }
 }
