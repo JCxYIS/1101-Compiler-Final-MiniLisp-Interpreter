@@ -1,4 +1,4 @@
 # MiniLisp Interpreter
 ###### 1101 Compiler Final Project
 
-A hand-craft mini lisp interpreter written in C#
+A hand-craft Mini-Lisp (subset of LISP) interpreter written in C#

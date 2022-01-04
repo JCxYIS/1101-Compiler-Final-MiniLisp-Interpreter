@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JC.MiniLisp_Interpreter
 {
@@ -33,8 +34,33 @@ namespace JC.MiniLisp_Interpreter
         public string Evaluate()
         {
             // TODO evaluation
-            // tokens
+            // AAA
+            List<IGrammar> tokens = Scanner();
+
+            // Scanner
+            
+
+
             return "";
+        }
+
+        private List<IGrammar> Scanner()
+        {
+            List<IGrammar> tokens = new List<IGrammar>();
+
+            List<string> splitedCode = code
+                .Replace("(", " ( ")
+                .Replace(")", " ) ")
+                .Split(' ', '\n', '\t', '\r')  // note: NTR is BADBADBAD!!
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .ToList(); 
+
+            foreach(string s in splitedCode)
+            {
+                System.Console.WriteLine($"[SPLITED CODE]\"{s}\"");
+            }
+
+            return tokens;
         }
     }
 }
