@@ -105,6 +105,7 @@ namespace JC.MiniLisp_Interpreter
                     || LOGICAL_OP.TryParse(stack)
                     || EXP.TryParse(stack)
                     || PRINT_STMT.TryParse(stack) 
+                    || IF_EXP.TryParse(stack) 
                 ) 
                 {                    
                     if(stack.Count == 0)

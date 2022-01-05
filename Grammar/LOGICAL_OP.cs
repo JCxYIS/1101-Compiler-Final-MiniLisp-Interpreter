@@ -9,8 +9,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
     ///     AND-OP ::= (and EXP EXP+)
     ///     OR-OP ::= (or EXP EXP+)
     ///     NOT-OP ::= (not EXP)
-
-    /// /// </summary>
+    /// </summary>
     public class LOGICAL_OP : IGrammar
     {
         public string op;

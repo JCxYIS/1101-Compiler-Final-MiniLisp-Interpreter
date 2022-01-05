@@ -20,15 +20,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
         {
             type = typeofVal;
             value = val;
-        }
-
-        public object Evaluate()
-        {
-            if(IsTerminal)
-                return value;
-            else
-                return ((IGrammar)value).Evaluate();
-        }
+        }        
 
         /// <summary>
         /// Try parse the parser stack
@@ -39,7 +31,14 @@ namespace JC.MiniLisp_Interpreter.Grammar
         {
             object top = stack.Peek();
             // for number and bool, scanner has already done the job.
-            if(/* top is VARIABLE ||*/ top is NUM_OP || top is LOGICAL_OP /*|| FUN-OP || FUN-CALL || IF-EXP*/)
+            if(
+                false
+                // || top is VARIABLE 
+                || top is NUM_OP 
+                || top is LOGICAL_OP 
+                // || FUN-OP 
+                // || FUN-CALL 
+                || top is IF_EXP)
             {
                 top = stack.Pop();
                 stack.Push(new EXP(top.GetType(), top));
@@ -48,6 +47,24 @@ namespace JC.MiniLisp_Interpreter.Grammar
             return false;
         }
 
+        /// <summary>
+        /// Generic evaluate
+        /// </summary>
+        /// <returns></returns>
+        public object Evaluate()
+        {
+            if(IsTerminal)
+                return value;
+            else
+                return ((IGrammar)value).Evaluate();
+        }
+
+        /// <summary>
+        /// Evaluate as type T.
+        /// If output type mismatch, we will throw an exception
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T Evaluate<T>()
         {
             object val = Evaluate();

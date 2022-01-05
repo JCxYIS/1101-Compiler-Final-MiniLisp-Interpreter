@@ -31,7 +31,7 @@ namespace JC.MiniLisp_Interpreter
                     Console.WriteLine("Available Args:");
                     Console.WriteLine("--debug : Debug Mode");
                     Console.WriteLine("--help  : lol");
-                    Console.WriteLine("--help  : run only once, no recursive");
+                    Console.WriteLine("--once  : run only once, no recursive");
                     Console.WriteLine("--quiet : Quite Mode");
                     Console.WriteLine("(file path) : Read Mini-Lisp code from file");
                     return;
