@@ -30,10 +30,12 @@ namespace JC.MiniLisp_Interpreter.Grammar
         public static bool TryParse(Stack<object> stack)
         {
             object top = stack.Peek();
+
             // for number and bool, scanner has already done the job.
+
+            // Parse these stuffs
             if(
                 false
-                // || top is VARIABLE 
                 || top is NUM_OP 
                 || top is LOGICAL_OP 
                 // || FUN-OP 
@@ -44,6 +46,19 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 stack.Push(new EXP(top.GetType(), top));
                 return true;
             }
+            
+            // Parse VARIABLES
+            if(top is string)
+            {
+                if(Interpreter.Instance.ContainsVariable((string)top))
+                {
+                    top = stack.Pop();
+                    EXP exp = Interpreter.Instance.GetVariable((string)top);
+                    stack.Push(exp);
+                    return true;
+                }
+            }
+            
             return false;
         }
 

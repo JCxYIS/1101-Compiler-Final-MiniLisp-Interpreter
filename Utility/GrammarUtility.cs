@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace JC.MiniLisp_Interpreter.Utility
 {
@@ -62,6 +63,20 @@ namespace JC.MiniLisp_Interpreter.Utility
             }
 
             return matches;
+        }
+
+        /// <summary>
+        /// Check if an id is valid 
+        /// ID ::= letter (letter | digit | ‘-’)*
+        /// </summary>
+        /// <param name="id"></param>
+        public static void CheckLegalId(this string id)
+        {
+            Regex regex = new Regex("[a-z]([a-z|0-9|-])*");
+            if(!regex.IsMatch(id))
+            {
+                throw new Exception($"id \"{id}\" is invalid!");
+            }        
         }
     }
 }

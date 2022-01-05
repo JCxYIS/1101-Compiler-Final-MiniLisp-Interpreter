@@ -22,7 +22,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
             while(stack.Count > 0) 
             {
                 object o = stack.Peek();
-                if(o is EXP || o is PRINT_STMT) // TODO DEF-STMT
+                if(o is EXP || o is PRINT_STMT || o is DEF_STMT) 
                 {
                     IGrammar newGrammar = (IGrammar)stack.Pop();
                     stmts.Add( new STMT(newGrammar) );

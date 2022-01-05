@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JC.MiniLisp_Interpreter.Grammar;
+using JC.MiniLisp_Interpreter.Utility;
 
 namespace JC.MiniLisp_Interpreter
 {
@@ -12,21 +13,26 @@ namespace JC.MiniLisp_Interpreter
     /// </summary>
     public class Interpreter
     {
-        string code = "";
+        public static Interpreter Instance;     
+
+        /// <summary>
+        /// Code
+        /// </summary>   
+        private string code = "";
+
+        /// <summary>
+        /// Holder of variables defined in this STMT / PROGRAM
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <typeparam name="EXP"></typeparam>
+        /// <returns></returns>
+        private Dictionary<string, EXP> variables = new Dictionary<string, EXP>();
 
         public Interpreter() { }
         public Interpreter(string lispCode)
         {
-            LoadCode(lispCode);
-        }
-
-        /// <summary>
-        /// Load code
-        /// </summary>
-        /// <param name="lispCode"></param>
-        public void LoadCode(string lispCode)
-        {
             this.code = lispCode;
+            Instance = this;
         }
 
         /// <summary>
@@ -105,13 +111,12 @@ namespace JC.MiniLisp_Interpreter
                     || LOGICAL_OP.TryParse(stack)
                     || EXP.TryParse(stack)
                     || PRINT_STMT.TryParse(stack) 
+                    || DEF_STMT.TryParse(stack)
                     || IF_EXP.TryParse(stack) 
                 ) 
                 {                    
                     if(stack.Count == 0)
-                    {
-                        break;
-                    }
+                        throw new Exception("OMG! Stack is empty!? That's impossipa!!");
                 }
 
                 // Debug print Stack
@@ -127,5 +132,43 @@ namespace JC.MiniLisp_Interpreter
             STMT.ParseAll(stack);
             return PROGRAM.ParseAll(stack);
         }
+
+
+        /// <summary>
+        /// Check if a variable exist
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool ContainsVariable(string id)
+        {
+            return variables.ContainsKey(id);
+        }
+
+        /// <summary>
+        /// Get a variable
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public EXP GetVariable(string id)
+        {
+            if(!ContainsVariable(id))
+                throw new Exception($"Undefined variable \"{id}\".");
+            return variables[id];
+        }
+
+        /// <summary>
+        /// Set a variable
+        /// throw error when the variable exist OR id is invalid
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="exp"></param>
+        public void SetVariable(string id, EXP exp)
+        {
+            id.CheckLegalId();
+            if(variables.ContainsKey(id))
+                throw new Exception($"Variable \"{id}\" is already exist.");
+            variables.Add(id, exp);
+        }
+
     }
 }

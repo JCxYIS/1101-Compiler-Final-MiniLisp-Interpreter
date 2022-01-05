@@ -46,7 +46,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
             }
             
             Debug.Print(output);
-            return output + "\r\n";
+            return null;
         }
     }
 }
