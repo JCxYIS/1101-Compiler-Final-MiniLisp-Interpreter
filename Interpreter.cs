@@ -28,6 +28,21 @@ namespace JC.MiniLisp_Interpreter
         /// <returns></returns>
         private Dictionary<string, EXP> variables = new Dictionary<string, EXP>();
 
+        /// <summary>
+        /// This value becomes non-null when a func declaration is parsed, and currently parsing its scope.
+        /// Use Stack because there might be nested fun. NASTY!
+        /// </summary>
+        private Stack<FUN_EXP> funConstructorStack = new Stack<FUN_EXP>();
+
+        /// <summary>
+        /// Current fun constructor. 
+        /// null = at global scope
+        /// </summary>
+        /// <returns></returns>
+        private FUN_EXP funConstructor => funConstructorStack.Count == 0 ? null : funConstructorStack.Peek();
+
+        /* -------------------------------------------------------------------------- */
+
         public Interpreter() { }
         public Interpreter(string lispCode)
         {
@@ -100,9 +115,26 @@ namespace JC.MiniLisp_Interpreter
             foreach(object token in tokens)
             {
                 // Shift one token to stack
-                stack.Push(token);    
                 // Console.WriteLine("[TOKEN]"+token);
-                Stack<object> cachedStack = new Stack<object>();
+                stack.Push(token); 
+
+                // Fun mode
+                var funMode = FUN_EXP.CheckFunMode(stack);
+                if(funMode is FUN_EXP)
+                {
+                    // start fun mode!
+                    funConstructorStack.Push(funMode);
+                }
+
+                // fun has its own parser
+                if(funConstructor?.FeedingFUN_IDs(stack) ?? false)
+                {
+                    // still fedding the FUN_ID
+                    continue;
+                }
+
+                // flag of end of fun constructor
+                bool endOfFunConstrutor = funConstructor?.ScanEndOfConstructor(stack) ?? false;
 
                 // Check if the stack is altered, 
                 // if it IS altered, keep running.
@@ -117,6 +149,14 @@ namespace JC.MiniLisp_Interpreter
                 {                    
                     if(stack.Count == 0)
                         throw new Exception("OMG! Stack is empty!? That's impossipa!!");
+                }
+
+                // end of fun
+                if(endOfFunConstrutor)
+                {
+                    funConstructor.EndOfConstructor(stack);
+                    funConstructorStack.Pop();
+                    Debug.Log("[Fun Constructor] Ended");
                 }
 
                 // Debug print Stack
@@ -141,6 +181,7 @@ namespace JC.MiniLisp_Interpreter
         /// <returns></returns>
         public bool ContainsVariable(string id)
         {
+            id = funConstructor?.GetLocalVar(id) ?? id;
             return variables.ContainsKey(id);
         }
 
@@ -151,6 +192,8 @@ namespace JC.MiniLisp_Interpreter
         /// <returns></returns>
         public EXP GetVariable(string id)
         {
+            id = funConstructor?.GetLocalVar(id) ?? id;
+
             if(!ContainsVariable(id))
                 throw new Exception($"Undefined variable \"{id}\".");
             return variables[id];
@@ -164,6 +207,8 @@ namespace JC.MiniLisp_Interpreter
         /// <param name="exp"></param>
         public void SetVariable(string id, EXP exp)
         {
+            id = funConstructor?.GetLocalVar(id) ?? id;
+
             id.CheckLegalId();
             if(variables.ContainsKey(id))
                 throw new Exception($"Variable \"{id}\" is already exist.");
