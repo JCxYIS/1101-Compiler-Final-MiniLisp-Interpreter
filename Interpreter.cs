@@ -102,6 +102,7 @@ namespace JC.MiniLisp_Interpreter
                 // if it IS altered, keep running.
                 while(
                     NUM_OP.TryParse(stack)
+                    || LOGICAL_OP.TryParse(stack)
                     || EXP.TryParse(stack)
                     || PRINT_STMT.TryParse(stack) 
                 ) 

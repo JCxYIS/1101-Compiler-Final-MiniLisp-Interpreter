@@ -6,15 +6,15 @@ namespace JC.MiniLisp_Interpreter.Grammar
 {
     /// <summary>
     /// NUM-OP ::= PLUS | MINUS | MULTIPLY | DIVIDE | MODULUS | GREATER | SMALLER | EQUAL
-    /// PLUS ::= (+ EXP EXP+)
-    /// MINUS ::= (- EXP EXP)
-    /// MULTIPLY ::= (* EXP EXP+)
-    /// DIVIDE ::= (/ EXP EXP)
-    /// MODULUS ::= (mod EXP EXP)
-    /// GREATER ::= (> EXP EXP)
-    /// SMALLER ::= (< EXP EXP)
-    /// EQUAL ::= (= EXP EXP+)
-    /// /// </summary>
+    ///     PLUS ::= (+ EXP EXP+)
+    ///     MINUS ::= (- EXP EXP)
+    ///     MULTIPLY ::= (* EXP EXP+)
+    ///     DIVIDE ::= (/ EXP EXP)
+    ///     MODULUS ::= (mod EXP EXP)
+    ///     GREATER ::= (> EXP EXP)
+    ///     SMALLER ::= (< EXP EXP)
+    ///     EQUAL ::= (= EXP EXP+)
+    /// </summary>
     public class NUM_OP : IGrammar
     {
         public string op;
@@ -91,18 +91,18 @@ namespace JC.MiniLisp_Interpreter.Grammar
         private double PlusAll()
         {
             double result = 0;
-            foreach(var r in elements)
+            foreach(var e in elements)
             {
-                result += r.Evaluate<double>();
+                result += e.Evaluate<double>();
             }
             return result;
         }    
         private double MultiAll()
         {
             double result = 1;
-            foreach(var r in elements)
+            foreach(var e in elements)
             {
-                result *= r.Evaluate<double>();
+                result *= e.Evaluate<double>();
             }
             return result;
         }    
@@ -110,9 +110,9 @@ namespace JC.MiniLisp_Interpreter.Grammar
         {
             double value = l.Evaluate<double>();
             bool result = true;
-            foreach(var r in elements)
+            foreach(var e in elements)
             {
-                result &= value == r.Evaluate<double>();
+                result &= value == e.Evaluate<double>();
             }
             return result;
         }    

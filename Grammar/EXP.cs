@@ -39,7 +39,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
         {
             object top = stack.Peek();
             // for number and bool, scanner has already done the job.
-            if(/* top is VARIABLE ||*/ top is NUM_OP /* || top is LOGICAL-OP || FUN-OP || FUN-CALL || IF-EXP*/)
+            if(/* top is VARIABLE ||*/ top is NUM_OP || top is LOGICAL_OP /*|| FUN-OP || FUN-CALL || IF-EXP*/)
             {
                 top = stack.Pop();
                 stack.Push(new EXP(top.GetType(), top));
@@ -50,7 +50,10 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
         public T Evaluate<T>()
         {
-            T t = (T)Evaluate();
+            object val = Evaluate();
+            if(!(val is T))
+                throw new Exception($"Evaluate {type}, expect {typeof(T)}, but get {val.GetType()}");
+            T t = (T)val;
             Debug.Log($"[EXP] Evaluate {type}, expect {typeof(T)}, and get value {t}");
             return t;
         }        
