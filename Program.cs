@@ -8,7 +8,41 @@ namespace JC.MiniLisp_Interpreter
     {
         static void Main(string[] args)
         {
-            bool useFileInput = args.Length != 0;
+            // Parse passed args
+            string filePath = "";
+            bool runOnce = false;
+            foreach(string arg in args)
+            {
+                // Console.WriteLine($"\"{arg}\"");
+                if(arg == "--quiet")
+                {
+                    Debug.UseQuiet = true;
+                }
+                else if(arg == "--debug")
+                {
+                    Debug.UseDebug = true;
+                }
+                else if(arg == "--once")
+                {
+                    runOnce = true;
+                }
+                else if(arg == "--help")
+                {
+                    Console.WriteLine("Available Args:");
+                    Console.WriteLine("--debug : Debug Mode");
+                    Console.WriteLine("--help  : lol");
+                    Console.WriteLine("--help  : run only once, no recursive");
+                    Console.WriteLine("--quiet : Quite Mode");
+                    Console.WriteLine("(file path) : Read Mini-Lisp code from file");
+                    return;
+                }
+                else
+                {
+                    filePath += arg;
+                }
+            }
+
+            // Main Program :D
             while(true)
             {
                 Debug.Print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+", ConsoleColor.Red);
@@ -17,7 +51,7 @@ namespace JC.MiniLisp_Interpreter
                 Debug.Print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+", ConsoleColor.Cyan);
 
                 Debug.Print("Please input your MiniLisp code:", ConsoleColor.Magenta);
-                string input = useFileInput ? ReadFileInput(args[0]) : ReadInput();
+                string input = string.IsNullOrEmpty(filePath) ? ReadInput() : ReadFileInput(args[0]);
 
                 Debug.Print("------------------------------------------------------", ConsoleColor.Blue);
                 Debug.Print("OK, Here is your output:", ConsoleColor.Magenta);
@@ -28,11 +62,11 @@ namespace JC.MiniLisp_Interpreter
                 Debug.Print("Press any key to continue...", ConsoleColor.Magenta);
                 Debug.Print("or press Esc to quit :)", ConsoleColor.Magenta);
 
-                if(Console.ReadKey().Key == ConsoleKey.Escape)
+                if(runOnce || Console.ReadKey().Key == ConsoleKey.Escape)
                     return;
 
                 Console.Clear();
-                useFileInput = false;
+                filePath = "";
             }
         }
 
@@ -64,7 +98,7 @@ namespace JC.MiniLisp_Interpreter
             try
             {
                 string input = File.ReadAllText(filePath);
-                Console.WriteLine(input);
+                Debug.Print(input, ConsoleColor.Gray);
                 return input;
             }
             catch(FileNotFoundException)
