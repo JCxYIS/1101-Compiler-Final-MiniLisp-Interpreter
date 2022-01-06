@@ -118,12 +118,21 @@ namespace JC.MiniLisp_Interpreter
                 // Console.WriteLine("[TOKEN]"+token);
                 stack.Push(token); 
 
+                // [Debug] print Stack
+                string log = $"[PARSER] Stack (LEN={stack.Count}) is ";
+                foreach(var ele in stack)
+                {
+                    log += "\n........"+ele;
+                }
+                Debug.Log(log);
+
                 // Fun mode
                 var funMode = FUN_EXP.CheckFunMode(stack);
                 if(funMode is FUN_EXP)
                 {
                     // start fun mode!
                     funConstructorStack.Push(funMode);
+                    continue;
                 }
 
                 // fun has its own parser
@@ -157,15 +166,7 @@ namespace JC.MiniLisp_Interpreter
                     funConstructor.EndOfConstructor(stack);
                     funConstructorStack.Pop();
                     Debug.Log("[Fun Constructor] Ended");
-                }
-
-                // Debug print Stack
-                string log = $"[PARSER] Stack (LEN={stack.Count}) is ";
-                foreach(var ele in stack)
-                {
-                    log += "\n........"+ele;
-                }
-                Debug.Log(log);
+                }                
             }
 
             // finish parse, now try sum up to PROGRAM

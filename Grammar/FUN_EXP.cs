@@ -31,8 +31,9 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// <summary>
         /// FUN-IDs: original id (FUN-ID) and its "wrapped" id
         /// a.k.a. Local Variable
+        /// Note that the EXP has no definition here.
         /// </summary>
-        public Dictionary<string, string> FUN_IDS = new Dictionary<string, string>();
+        public Dictionary<string, EXP> FUN_IDS = new Dictionary<string, EXP>();
 
         /// <summary>
         /// FUN-BODY
@@ -56,6 +57,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
             {
                 stack.Pop(); // "func" or "lambda"\
                 // stack.Pop(); // "("
+                Debug.Log("[FunConstructor] Fun Mode Start");
                 return new FUN_EXP();
             }
             return null;
@@ -77,6 +79,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 if(stack.IsStringAndEndWith("("))
                 {
                     feedingFunIdIndex = 1;
+                    Debug.Log("[FunConstructor] FeedingFunIdIndex=0, Get \"(\" so => 1");
                 }
                 else
                 {
@@ -89,6 +92,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 if(stack.IsStringAndEndWith(")"))
                 {
                     feedingFunIdIndex = -1;
+                    Debug.Log("[FunConstructor] FeedingFunIdIndex=1, Get \")\" so => -1");
                 }
                 else
                 {
@@ -132,34 +136,35 @@ namespace JC.MiniLisp_Interpreter.Grammar
         }
 
         /// <summary>
-        /// 
+        /// Register new local var,
+        /// store as undefined EXP.
         /// </summary>
-        /// <param name="rawId"></param>
-        private void AddLocalVar(string rawId)
+        /// <param name="id"></param>
+        private void AddLocalVar(string id)
         {
-            if(FUN_IDS.ContainsKey(rawId))
-                throw new Exception($"Local Variable \"{rawId}\" is already exist.");
+            if(FUN_IDS.ContainsKey(id))
+                throw new Exception($"Local Variable \"{id}\" is already exist.");
             
-            FUN_IDS.Add(rawId, $"LocalVar_{GetHashCode()}_{rawId}");
-            Debug.Log($"[FUNC_EXP] Add Local Var {rawId} => {FUN_IDS[rawId]}");
+            FUN_IDS.Add(id, new EXP());
+            Debug.Log($"[FUNC_EXP] Add Local Variable {id} (Note: this will be stored as undefined EXP)");
         }
 
         /// <summary>
         /// Find the real name of a local var
-        /// Pass original id if no such local var.
+        /// Pass null if no such local var.
         /// </summary>
         /// <param name="rawId"></param>
         /// <param name="newId"></param>
         /// <returns></returns>
-        public string GetLocalVar(string rawId)
+        public EXP TryGetLocalVar(string rawId)
         {
             if(FUN_IDS.ContainsKey(rawId))    
             {
-                Debug.Log($"[FUNC_EXP] Get Local Var {rawId} => {FUN_IDS[rawId]}");
+                Debug.Log($"[FUNC_EXP] Get Local Variable {rawId}");
                 return FUN_IDS[rawId];
             }
             
-            return rawId;
+            return null;
         }
 
         public object Evaluate()

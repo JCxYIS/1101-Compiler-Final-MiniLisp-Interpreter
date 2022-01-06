@@ -7,9 +7,11 @@ namespace JC.MiniLisp_Interpreter.Grammar
     /// EXP ::= bool-val | number | VARIABLE | NUM-OP | LOGICAL-OP | FUN-EXP | FUN-CALL | IF-EXP
     /// </summary>
     public class EXP : IGrammar
-    {
+    {       
         private Type type;
-        private object value;        
+        private object value;     
+
+        public bool IsUndefined => type is null || value is null;   
 
         private bool IsTerminal =>
             type == typeof(bool) || // boolean
@@ -20,7 +22,12 @@ namespace JC.MiniLisp_Interpreter.Grammar
         {
             type = typeofVal;
             value = val;
-        }        
+        }   
+
+        public EXP()
+        {
+            // undefined EXP
+        }     
 
         /// <summary>
         /// Try parse the parser stack
@@ -55,6 +62,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
                     top = stack.Pop();
                     EXP exp = Interpreter.Instance.GetVariable((string)top);
                     stack.Push(exp);
+                    Debug.Log($"[EXP] Push variable of name {top}");
                     return true;
                 }
             }
