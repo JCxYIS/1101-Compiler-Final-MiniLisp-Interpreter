@@ -9,10 +9,6 @@ namespace JC.MiniLisp_Interpreter.Grammar
     /// FUN-EXP ::= (fun FUN_IDs FUN-BODY)
     ///     FUN-IDs ::= (id*)
     ///     FUN-BODY ::= EXP
-    ///     // FUN-CALL ::= (FUN-EXP PARAM*) | (FUN-NAME PARAM*)
-    ///     PARAM ::= EXP
-    ///     LAST-EXP ::= EXP
-    ///     FUN-NAME ::= id
     /// </summary>
     public class FUN_EXP : IGrammar
     {        
@@ -126,6 +122,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// <param name="stack"></param>
         public void EndOfConstructor(Stack<object> stack)
         {
+            stack.Pop(); // ")"
             object o = stack.Pop();
             if(!(o is EXP))
                 throw new Exception("FUN_BODY should be EXP, but get "+o.GetType());
@@ -156,15 +153,15 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// <param name="rawId"></param>
         /// <param name="newId"></param>
         /// <returns></returns>
-        public EXP TryGetLocalVar(string rawId)
+        public EXP HasLocalVar(string rawId)
         {
             if(FUN_IDS.ContainsKey(rawId))    
             {
                 Debug.Log($"[FUNC_EXP] Get Local Variable {rawId}");
                 return FUN_IDS[rawId];
             }
-            
-            return null;
+            Debug.Log($"[FUNC_EXP] Cannot get Local Variable rawId={rawId}");
+            return null;            
         }
 
         public object Evaluate()

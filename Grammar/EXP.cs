@@ -45,7 +45,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 false
                 || top is NUM_OP 
                 || top is LOGICAL_OP 
-                // || FUN-OP 
+                // || FUN-EXP 
                 // || FUN-CALL 
                 || top is IF_EXP)
             {
@@ -65,6 +65,10 @@ namespace JC.MiniLisp_Interpreter.Grammar
                     Debug.Log($"[EXP] Push variable of name {top}");
                     return true;
                 }
+                else
+                {
+                    Debug.Log($"[EXP] string \"{top}\" is not a variable, remain string.");
+                }
             }
             
             return false;
@@ -76,6 +80,8 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// <returns></returns>
         public object Evaluate()
         {
+            if(IsUndefined)
+                throw new Exception("EXP is undefined!");
             if(IsTerminal)
                 return value;
             else
