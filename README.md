@@ -4,8 +4,15 @@
 > A hand-craft Mini-Lisp (subset of LISP) interpreter written in C#
 
 ## Usage
-Directly open the program in terminal, paste your lisp code,
-or you can pass in the path to the lisp code file inro the program (e.g. `"./output.exe testcase/test_data/03_1.lsp"`)
+- Simply open the program, paste your lisp code and press `Ctrl + Z`,
+- or you can pass in the path to the lisp code file inro the program (e.g. `"./output.exe testcase/test_data/03_1.lsp"`)
+
+### Available Args
+`--debug` : Debug Mode
+`--help`  : Print help and quit
+`--once`  : Run once only
+`--quiet` : Quiet Mode
+(file path) : Read Mini-Lisp code from file
 
 ## Tasks
 
@@ -28,3 +35,10 @@ or you can pass in the path to the lisp code file inro the program (e.g. `"./out
 
 ## Note
 Currently all number is treated as double, so the test cases might give a different output than the answer.
+
+## Screenshots
+![](https://i.imgur.com/OEqYKiY.png)
+
+![](https://i.imgur.com/HFgVupk.png)
+
+![](https://i.imgur.com/COJCmsZ.png)

@@ -28,6 +28,7 @@ namespace JC.MiniLisp_Interpreter
                 }
                 else if(arg == "--help")
                 {
+                    Console.WriteLine("== Version 1.0 ==");
                     Console.WriteLine("Available Args:");
                     Console.WriteLine("--debug : Debug Mode");
                     Console.WriteLine("--help  : lol");
@@ -103,7 +104,7 @@ namespace JC.MiniLisp_Interpreter
             }
             catch(FileNotFoundException)
             {
-                Console.WriteLine($"[Error] Input file found: {filePath}");
+                Console.WriteLine($"[Error] Input file not found: {filePath}");
                 return "";
             }
         }
