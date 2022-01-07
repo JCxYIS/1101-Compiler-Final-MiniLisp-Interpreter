@@ -38,8 +38,14 @@
 Currently all number is treated as double, so the test cases might give a different output than the answer.
 
 ## Screenshots
+- Read from file
 ![](https://i.imgur.com/OEqYKiY.png)
 
+- Open debug  
 ![](https://i.imgur.com/HFgVupk.png)
 
+- Quiet & Once  
 ![](https://i.imgur.com/COJCmsZ.png)
+
+- Error Message  
+![](https://i.imgur.com/0EVKtC9.png)
