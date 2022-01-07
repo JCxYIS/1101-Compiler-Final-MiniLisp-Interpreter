@@ -58,6 +58,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
             }
 
             // match (FUN-NAME PARAM*)
+            // handled in EXP (this kind of fun is treated as a variable)
 
             return false;
         }
