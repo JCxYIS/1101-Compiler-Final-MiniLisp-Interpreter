@@ -11,6 +11,9 @@ namespace JC.MiniLisp_Interpreter.Grammar
         private Type type;
         private object value;     
 
+        /// <summary>
+        /// !Initalized
+        /// </summary>
         public bool IsUndefined => type is null || value is null;   
 
         private bool IsTerminal =>
@@ -26,8 +29,16 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
         public EXP()
         {
-            // undefined EXP
-        }     
+            // uninited EXP
+        }
+
+        public void InitalizeWithExp(EXP exp)
+        {
+            if(!IsUndefined)
+                throw new NotImplementedException("ReInitalize detected! That is not supported yet.");
+            type = exp.type;
+            value = exp.value;
+        } 
 
         /// <summary>
         /// Try parse the parser stack
@@ -46,7 +57,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 || top is NUM_OP 
                 || top is LOGICAL_OP 
                 // || FUN-EXP 
-                // || FUN-CALL 
+                || top is FUN_CALL
                 || top is IF_EXP)
             {
                 top = stack.Pop();

@@ -31,6 +31,8 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// </summary>
         public Dictionary<string, EXP> FUN_IDS = new Dictionary<string, EXP>();
 
+        public List<EXP> FUN_IDS_inOrder = new List<EXP>();
+
         /// <summary>
         /// FUN-BODY
         /// </summary>
@@ -142,7 +144,10 @@ namespace JC.MiniLisp_Interpreter.Grammar
             if(FUN_IDS.ContainsKey(id))
                 throw new Exception($"Local Variable \"{id}\" is already exist.");
             
-            FUN_IDS.Add(id, new EXP());
+            // fill in an uninitalized EXP
+            EXP undefinedExp = new EXP();
+            FUN_IDS.Add(id, undefinedExp);
+            FUN_IDS_inOrder.Add(undefinedExp);
             Debug.Log($"[FUNC_EXP] Add Local Variable {id} (Note: this will be stored as undefined EXP)");
         }
 
@@ -172,7 +177,18 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
         public object Evaluate(List<EXP> param)
         {
-            // TODO fill in the params
+            // param length check
+            if(param.Count != FUN_IDS_inOrder.Count)
+            {
+                throw new Exception($"Function param count mismatch: expect {param.Count} but get {FUN_IDS_inOrder.Count}.");
+            }
+
+            // plug in the params
+            for(int i = 0; i < param.Count; i++)
+            {
+                FUN_IDS_inOrder[i].InitalizeWithExp(param[i]);
+            }
+
             return FUN_BODY.Evaluate();
         }
 
