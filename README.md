@@ -1,8 +1,8 @@
 # MiniLisp Interpreter
 ###### 1101 Compiler Final Project
 
-> 我徒手幹出了一個 C# 的 Mini-Lisp 直譯器
-> A hand-craft Mini-Lisp (subset of LISP) interpreter written in C#
+> 我徒手幹出了一個 C# 的 Mini-Lisp 直譯器。  
+> A hand-craft Mini-Lisp (subset of LISP) interpreter written in C#  
 
 ## Usage
 - Simply open the program, paste your lisp code and press `Ctrl + Z`,
