@@ -1,6 +1,7 @@
 # MiniLisp Interpreter
 ###### 1101 Compiler Final Project
 
+> 我徒手幹出了一個 C# 的 Mini-Lisp 直譯器
 > A hand-craft Mini-Lisp (subset of LISP) interpreter written in C#
 
 ## Usage
@@ -8,11 +9,11 @@
 - or you can pass in the path to the lisp code file inro the program (e.g. `"./output.exe testcase/test_data/03_1.lsp"`)
 
 ### Available Args
-`--debug` : Debug Mode
-`--help`  : Print help and quit
-`--once`  : Run once only
-`--quiet` : Quiet Mode
-(file path) : Read Mini-Lisp code from file
+- `--debug` : Debug Mode
+- `--help`  : Print help and quit
+- `--once`  : Run once only
+- `--quiet` : Quiet Mode
+- (file path) : Read Mini-Lisp code from file
 
 ## Tasks
 
