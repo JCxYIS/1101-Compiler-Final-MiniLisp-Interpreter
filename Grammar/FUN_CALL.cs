@@ -12,10 +12,26 @@ namespace JC.MiniLisp_Interpreter.Grammar
     /// </summary>
     public class FUN_CALL : IGrammar
     {        
+        private FUN_EXP fun_exp;
+        private List<EXP> param;
 
-        public FUN_CALL()
+        public FUN_CALL(FUN_EXP fun_exp, List<EXP> param)
         {
-
+            this.fun_exp = fun_exp;
+            this.param = param;
+        }
+        public FUN_CALL(FUN_EXP fun_exp, List<object> param)
+        {
+            this.fun_exp = fun_exp;
+            List<EXP> paramExp = new List<EXP>();
+            for(int i = 0; i < param.Count; i++)
+            {
+                if(param[i] is EXP)
+                    paramExp.Add((EXP)param[i]);
+                else
+                    throw new Exception($"FUN_CALL: PARAM should be EXP, but get {param[i].GetType()}");
+            }
+            this.param = paramExp;
         }
 
         /// <summary>
@@ -25,19 +41,28 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// <returns>The stack is substitued</returns>
         public static bool TryParse(Stack<object> stack)
         {
-            // (FUN-EXP PARAM*)
-            if(stack.Peek() is FUN_EXP)
+            // reversed stack (list)
+            List<object> stackReverse = new List<object>(stack);
+
+            // match (FUN-EXP PARAM*)
+            var match1 = stack.MatchFuncType(typeof(FUN_EXP));
+            if(match1 != null)
             {
-                
+                Debug.Log($"[FUN_CALL] Match (FUN-EXP PARAM*) with param count={match1.Count-1}");
+
+                FUN_EXP fun = (FUN_EXP)match1[0];
+                match1.RemoveAt(0);                
+                stack.Push(new FUN_CALL(fun, match1));
+
+                return true;
             }
             return false;
         }
 
         public object Evaluate()
         {            
-            // TODO eval
-            // return .Evaluate();
-            return null;
+            return fun_exp.Evaluate(param);
+            // return null;
         }
 
         public override string ToString()

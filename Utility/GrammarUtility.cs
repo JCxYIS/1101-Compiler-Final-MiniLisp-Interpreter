@@ -49,20 +49,66 @@ namespace JC.MiniLisp_Interpreter.Utility
             for(int i = LParenthesisPos-1; i > 0; i--)
             {
                 matches.Add(stackList[i]);
-                Debug.Log("Added "+stackList[i]);
+                Debug.Log("[Util.Match] Added "+stackList[i]);
             }
 
-            // Pop the (...) of stack
-            while(true)
-            {
-                var s = stack.Pop();
-                if(s.ToString() == "(")
-                {
-                    break;
-                }
-            }
+            // Pop the (... ...) of stack
+            stack.PopN(matches.Count()+2);
 
             return matches;
+        }
+
+        /// <summary>
+        /// If (typeof(type) ...) match, pop them all and return the elements:  type(element of that type) and ...
+        /// </summary>
+        /// <returns></returns>
+        public static List<object> MatchFuncType(this Stack<object> stack, Type type)
+        {
+            if(!stack.IsStringAndEndWith(")"))
+                return null;
+
+            // cached stack
+            // NOTE THIS IS REVERSED LIST!!! [0] = ")"
+            List<object> stackList = new List<object>(stack); 
+
+            // find "("
+            int LParenthesisPos = stackList.FindIndex(s => s.ToString() == "(");
+            if(LParenthesisPos < 0)
+                throw new IndexOutOfRangeException("Cannot find \"(\".");
+
+            // match funcName
+            Type myFuncType = stackList[LParenthesisPos - 1].GetType();
+            if(myFuncType != type)
+            {
+                // Debug.Log($"[GrammarUtil] Function {stackList[LParenthesisPos - 1].ToString()} doesn't match expected funcName {funcName}");
+                return null;
+            }
+
+            // Match matchtype
+            List<object> matches = new List<object>();
+            for(int i = LParenthesisPos-1; i > 0; i--)
+            {
+                matches.Add(stackList[i]);
+                Debug.Log("[Util.Match] Added "+stackList[i]);
+            }
+
+            // Pop the (... ...) of stack
+            stack.PopN(matches.Count + 2);
+
+            return matches;
+        }
+
+        /// <summary>
+        /// pop n objects
+        /// </summary>
+        /// <param name="stack"></param>
+        /// <param name="n"></param>
+        public static void PopN(this Stack<object> stack, int n)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                stack.Pop();
+            }
         }
 
         /// <summary>

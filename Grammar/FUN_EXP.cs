@@ -166,7 +166,13 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
         public object Evaluate()
         {            
-            // TODO eval
+            Debug.Log("[FUN_EXP] WARNING! You call FUN_EXP.Evaluate() without any param, this might cause error since the local var are still undefined.");
+            return FUN_BODY.Evaluate();
+        }
+
+        public object Evaluate(List<EXP> param)
+        {
+            // TODO fill in the params
             return FUN_BODY.Evaluate();
         }
 
