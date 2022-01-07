@@ -49,7 +49,7 @@ namespace JC.MiniLisp_Interpreter.Utility
             for(int i = LParenthesisPos-1; i > 0; i--)
             {
                 matches.Add(stackList[i]);
-                Debug.Log("[Util.Match] Added "+stackList[i]);
+                Debug.Log("[Util.Match (Str)] Added "+stackList[i]);
             }
 
             // Pop the (... ...) of stack
@@ -89,7 +89,7 @@ namespace JC.MiniLisp_Interpreter.Utility
             for(int i = LParenthesisPos-1; i > 0; i--)
             {
                 matches.Add(stackList[i]);
-                Debug.Log("[Util.Match] Added "+stackList[i]);
+                Debug.Log("[Util.Match (Type)] Added "+stackList[i]);
             }
 
             // Pop the (... ...) of stack

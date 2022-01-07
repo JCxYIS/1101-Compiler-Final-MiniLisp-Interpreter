@@ -34,6 +34,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
             if(match[1] is string && match[2] is EXP)
             {
                 stack.Push(new DEF_STMT((string)match[1], (EXP)match[2]));
+                Debug.Log("[DEF_STMT] pushed");
                 return true;
             }
             else

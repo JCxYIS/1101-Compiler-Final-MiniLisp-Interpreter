@@ -56,7 +56,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
                 false
                 || top is NUM_OP 
                 || top is LOGICAL_OP 
-                // || FUN-EXP 
+                || top is FUN_EXP 
                 || top is FUN_CALL
                 || top is IF_EXP)
             {

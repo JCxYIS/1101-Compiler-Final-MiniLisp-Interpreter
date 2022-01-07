@@ -194,7 +194,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
         public override string ToString()
         {
-            return $"FUNC_EXP with {FUN_IDS.Count} arguments";
+            return $"FUN_EXP with {FUN_IDS.Count} arguments";
         }
     }
 }
