@@ -33,7 +33,7 @@
 - [ ] 3. Nested Function Nested function (static scope) *(+5%)*
 - [ ] 4. First-class Function Able to pass functions, support closure *(+5%)*
 
-## Note
+##### Note
 Currently all number is treated as double, so the test cases might give a different output than the answer.
 
 ## Screenshots
