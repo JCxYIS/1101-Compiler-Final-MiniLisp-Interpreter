@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using JC.MiniLisp_Interpreter.Utility;
 
@@ -28,10 +29,11 @@ namespace JC.MiniLisp_Interpreter.Grammar
             
             // length check
             if(match.Count != 3)
-                throw new System.Exception($"\"define\" Need exact 2 arguments, but got {match.Count-1}.");
+                throw new Exception($"\"define\" Need exact 2 arguments, but got {match.Count-1}.");
 
             // type checking
-            if(match[1] is string && match[2] is EXP)
+            if(match[1] is string && 
+                (match[2] is EXP || match[2] is FUN_EXP) )
             {
                 stack.Push(new DEF_STMT((string)match[1], (EXP)match[2]));
                 Debug.Log("[DEF_STMT] pushed");
@@ -39,7 +41,8 @@ namespace JC.MiniLisp_Interpreter.Grammar
             }
             else
             {
-                return false;
+                throw new Exception($"\"define\" Need exact 2 arguments with type String and EXP/FUN_EXP, but got {match[1].GetType()} and {match[2].GetType()}.");
+                // return false;
             }
 
         }

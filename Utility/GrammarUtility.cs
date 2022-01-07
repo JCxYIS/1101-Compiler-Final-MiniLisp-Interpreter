@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using JC.MiniLisp_Interpreter.Grammar;
 
 namespace JC.MiniLisp_Interpreter.Utility
 {
@@ -60,6 +61,7 @@ namespace JC.MiniLisp_Interpreter.Utility
 
         /// <summary>
         /// If (typeof(type) ...) match, pop them all and return the elements:  type(element of that type) and ...
+        /// NOTICE: the type contains in EXP also counts!
         /// </summary>
         /// <returns></returns>
         public static List<object> MatchFuncType(this Stack<object> stack, Type type)
@@ -76,17 +78,26 @@ namespace JC.MiniLisp_Interpreter.Utility
             if(LParenthesisPos < 0)
                 throw new IndexOutOfRangeException("Cannot find \"(\".");
 
+            // the result
+            List<object> matches = new List<object>();
+
             // match funcName
             Type myFuncType = stackList[LParenthesisPos - 1].GetType();
-            if(myFuncType != type)
+            if(myFuncType == type) // EXP
             {
-                // Debug.Log($"[GrammarUtil] Function {stackList[LParenthesisPos - 1].ToString()} doesn't match expected funcName {funcName}");
+                matches.Add(stackList[LParenthesisPos - 1]);
+            }
+            else if(myFuncType == typeof(EXP) && ((EXP)stackList[LParenthesisPos - 1]).Type == type )
+            {
+                matches.Add( ((EXP)stackList[LParenthesisPos - 1]).Value );
+            }
+            else
+            {
                 return null;
             }
 
             // Match matchtype
-            List<object> matches = new List<object>();
-            for(int i = LParenthesisPos-1; i > 0; i--)
+            for(int i = LParenthesisPos-2; i > 0; i--)
             {
                 matches.Add(stackList[i]);
                 Debug.Log("[Util.Match (Type)] Added "+stackList[i]);
@@ -112,6 +123,20 @@ namespace JC.MiniLisp_Interpreter.Utility
         }
 
         /// <summary>
+        /// Print current Stack status in Debig.Log
+        /// </summary>
+        /// <param name="stack"></param>
+        public static void DebugLog(this Stack<object> stack)
+        {
+            string log = $"[PARSER] Stack (LEN={stack.Count}) is ";
+            foreach(var ele in stack)
+            {
+                log += "\n........"+ele;
+            }
+            Debug.Log(log);
+        }
+
+        /// <summary>
         /// Check if an id is valid 
         /// ID ::= letter (letter | digit | ‘-’)*
         /// </summary>
@@ -124,5 +149,6 @@ namespace JC.MiniLisp_Interpreter.Utility
                 throw new Exception($"id \"{id}\" is invalid!");
             }        
         }
+
     }
 }

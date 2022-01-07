@@ -119,12 +119,7 @@ namespace JC.MiniLisp_Interpreter
                 stack.Push(token); 
 
                 // [Debug] print Stack
-                string log = $"[PARSER] Stack (LEN={stack.Count}) is ";
-                foreach(var ele in stack)
-                {
-                    log += "\n........"+ele;
-                }
-                Debug.Log(log);
+                stack.DebugLog();
 
                 // Fun mode
                 var funMode = FUN_EXP.CheckFunMode(stack);
@@ -147,14 +142,13 @@ namespace JC.MiniLisp_Interpreter
 
                 // Check if the stack is altered, 
                 // if it IS altered, keep running.
-                while(
-                    NUM_OP.TryParse(stack)
+                while( NUM_OP.TryParse(stack)
                     || LOGICAL_OP.TryParse(stack)
-                    || EXP.TryParse(stack)
                     || PRINT_STMT.TryParse(stack) 
                     || DEF_STMT.TryParse(stack)
                     || IF_EXP.TryParse(stack) 
                     || FUN_CALL.TryParse(stack)
+                    || EXP.TryParse(stack)
                 ) 
                 {                    
                     if(stack.Count == 0)
@@ -166,6 +160,7 @@ namespace JC.MiniLisp_Interpreter
                 {
                     funConstructor.EndOfConstructor(stack);
                     funConstructorStack.RemoveAt(funConstructorStack.Count()-1);
+                    EXP.TryParse(stack); // convert the FUN_CALL directly to EXP
                     Debug.Log($"[Fun Constructor] Ended {funConstructorStack.Count()+1}, Thank you.");
                 }                
             }

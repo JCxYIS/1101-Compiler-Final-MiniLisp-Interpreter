@@ -15,6 +15,8 @@ namespace JC.MiniLisp_Interpreter.Grammar
         /// !Initalized
         /// </summary>
         public bool IsUndefined => type is null || value is null;   
+        public Type Type => type;
+        public object Value => value;
 
         private bool IsTerminal =>
             type == typeof(bool) || // boolean
@@ -49,7 +51,7 @@ namespace JC.MiniLisp_Interpreter.Grammar
         {
             object top = stack.Peek();
 
-            // for number and bool, scanner has already done the job.
+            // NOTE: for number and bool, scanner has already done the job.        
 
             // Parse these stuffs
             if(

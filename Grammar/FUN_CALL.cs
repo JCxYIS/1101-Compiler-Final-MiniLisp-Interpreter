@@ -56,6 +56,9 @@ namespace JC.MiniLisp_Interpreter.Grammar
 
                 return true;
             }
+
+            // match (FUN-NAME PARAM*)
+
             return false;
         }
 

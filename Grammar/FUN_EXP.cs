@@ -175,6 +175,11 @@ namespace JC.MiniLisp_Interpreter.Grammar
             return FUN_BODY.Evaluate();
         }
 
+        /// <summary>
+        /// Evaluate the func with given param in order
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public object Evaluate(List<EXP> param)
         {
             // param length check
